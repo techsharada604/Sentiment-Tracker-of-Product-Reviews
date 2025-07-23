@@ -5,7 +5,7 @@ from nltk.tokenize import sent_tokenize
 
 nltk.download("punkt")
 
-# Initialize sentiment model (binary, strong general-purpose)
+# Load ABSA model
 sentiment_pipeline = pipeline("sentiment-analysis", model="yangheng/deberta-v3-base-absa-v1.1")
 
 def clean_sentence(s):
@@ -15,35 +15,25 @@ def clean_sentence(s):
     s = s.strip()
     return s
 
-# Custom helper to group contrastive sentences
-def group_with_context(sentences, i, window=1):
-    start = max(0, i - window)
-    end = min(len(sentences), i + window + 1)
-    return " ".join(sentences[start:end])
-
-def analyze_review(text, aspect_keywords):
+def analyze_review(text, aspects):
     aspect_sentiment = {}
     if not isinstance(text, str):
         return aspect_sentiment
 
-    sentences = sent_tokenize(text)
-    cleaned_sentences = [clean_sentence(s) for s in sentences]
+    text = clean_sentence(text)
+    
+    for aspect in aspects:
+        prompt = f"What do you think about the {aspect}?"
+        full_text = f"{text} {prompt}"
+        result = sentiment_pipeline(full_text)[0]
+        label = result["label"]
+        confidence = result["score"]
 
-    for aspect, keywords in aspect_keywords.items():
-        evidence = []
-        for i, sent in enumerate(cleaned_sentences):
-            if any(k in sent for k in keywords):
-                context_block = group_with_context(cleaned_sentences, i)
-                result = sentiment_pipeline(context_block)[0]
-                label = result['label']
-                confidence = result['score']
-
-                sentiment_icon = '✅' if label == 'POSITIVE' else '❌'
-                aspect_sentiment[aspect] = {
-                    'sentiment': sentiment_icon,
-                    'confidence': confidence,
-                    'evidence': [sent]
-                }
-                break  
+        sentiment_icon = "✅" if label == "Positive" else if "O" if label=="Neutral" else "❌"
+        aspect_sentiment[aspect] = {
+            "sentiment": sentiment_icon,
+            "confidence": confidence,
+            "label": label
+        }
 
     return aspect_sentiment

@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from streamlit_dynamic_filters import DynamicFilters
+#from streamlit_dynamic_filters import DynamicFilters
 st.header("Dashboard")
 @st.cache_data
 def load_dataset(pth):

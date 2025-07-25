@@ -7,54 +7,57 @@ from nltk.tokenize import sent_tokenize
 
 nltk.download('punkt')
 tqdm.pandas()
-
-
 def get_aspect_keywords():
     return {
-        "effectiveness": [
-            "pain relief", "healing time", "long-lasting", "visible results",
-            "fast-acting", "effective", "works well", "noticeable improvement"
+        "performance": [
+            "grip", "bounce", "speed", "accuracy", "control", "swing", "responsiveness",
+            "power", "balance", "stability", "spin", "flight", "trajectory"
         ],
-        "scent": [
-            "fragrance", "natural smell", "pleasantness", "odor", "smells good", "strong scent", "aroma", "unscented"
+        "durability": [
+            "long-lasting", "durable", "strong", "tough", "robust", "resilient", 
+            "wear and tear", "cracks", "breakage", "holds up well"
         ],
-        "ingredients": [
-            "organic", "chemical-free", "active ingredients", "natural ingredients", 
-            "paraben-free", "no additives", "clean ingredients", "non-toxic"
+        "comfort": [
+            "comfortable", "cushioning", "padding", "breathable", "ventilated",
+            "soft", "sweat-resistant", "blister-free", "ergonomic"
         ],
-        "suitability": [
-            "sensitive skin", "non-irritating", "rash-free", "allergy-friendly",
-            "gentle", "safe for kids", "dermatologist-tested"
+        "fit_and_size": [
+            "fit", "true to size", "tight", "loose", "snug", "perfect fit", 
+            "adjustable", "size runs small", "size runs large"
         ],
-        "value": [
-            "price", "quantity", "worth the cost", "affordable", "overpriced", 
-            "good value", "expensive", "budget-friendly"
+        "material_quality": [
+            "rubber", "carbon fiber", "leather", "synthetic", "plastic", "foam",
+            "steel", "metal", "mesh", "material quality"
+        ],
+
+        "ease_of_use": [
+            "easy to use", "easy to assemble", "user-friendly", "setup", "simple", 
+            "instructions", "quick install", "intuitive"
+        ],
+        "portability": [
+            "lightweight", "easy to carry", "portable", "compact", "foldable", 
+            "fits in bag", "travel-friendly"
         ],
         "packaging": [
-            "sealed", "easy to use", "leak-proof", "broken bottle", "messy", "travel-friendly", "tamper-proof"
+            "well packed", "damaged box", "protective packaging", "sealed", 
+            "safe delivery", "secure packaging"
         ],
-        "texture": [
-            "non-greasy", "smooth", "absorbs well", "sticky", "thick", "lightweight", "creamy"
+        "value": [
+            "worth the price", "affordable", "cheap quality", "expensive", 
+            "overpriced", "great deal", "value for money"
         ],
-        "application": [
-            "easy to apply", "absorbs quickly", "messy to use", "instructions", "daily use", "frequency"
+        "maintenance": [
+            "easy to clean", "low maintenance", "machine washable", "rust-free", 
+            "wipes clean", "easy to store", "requires upkeep"
         ],
-        "side effects": [
-            "itching", "burning", "irritation", "breakout", "allergic reaction", 
-            "no side effects", "skin peel"
-        ],
-        "longevity": [
-            "lasts long", "short lifespan", "expires soon", "stable formula", "retains quality"
-        ],
-        "brand trust": [
-            "trusted brand", "reliable", "well-known", "reputable", "popular brand", "consistent quality"
-        ],
-        "customer service": [
-            "fast delivery", "replacement", "refund", "support", "damaged product", "return policy"
-        ]
-    }
 
-sentiment_pipeline = pipeline("sentiment-analysis", model="yangheng/deberta-v3-base-absa-v1.1", device=-1)
+        "customer_service": [
+            "support", "refund", "return policy", "replacement", "fast delivery", 
+            "helpful staff", "response time", "damaged on arrival"
+        ]
+    }"""depending on the category of products"""
+
+sentiment_pipeline = pipeline("sentiment-analysis", model="yangheng/deberta-v3-base-absa-v1.1")
 
 def analyze_review(text, aspect_keywords):
     aspect_sentiment = {}
